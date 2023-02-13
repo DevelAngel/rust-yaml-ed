@@ -1,0 +1,20 @@
+[package]
+name         = "yaml-ed"
+version      = "0.1.0"
+edition      = "2021"
+authors      = ["A. Drossos"]
+description  = "Manipulation of yaml files"
+readme       = "README.md"
+license      = "GPL-3.0-or-later"
+homepage     = "https://github.com/DevelAngel/rust-yaml-ed"
+repository   = "https://github.com/DevelAngel/rust-yaml-ed"
+keywords     = ["cli", "yaml"]
+categories   = ["command-line-utilities"]
+rust-version = "1.67"
+publish      = false # alpha
+
+
+[dependencies]
+serde = "1.0"
+serde_yaml = "0.9"
+thiserror = "1.0"
