@@ -1,16 +1,27 @@
 use std::process::Command;
 
 use assert_cmd::prelude::*;
+use assert_fs::prelude::*;
 use predicates::prelude::*;
 
 #[test]
-fn file_doesnt_exist() -> Result<(), Box<dyn std::error::Error>> {
-    let mut cmd = Command::cargo_bin("yaml-ed")?;
+fn print_file() -> Result<(), Box<dyn std::error::Error>> {
+    const CONTENT: &'static str = r#"\
+        a: "1"
+        b:
+          bb: "2"
+        c:
+          cc:
+            ccc: "3"
+        "#;
+    let file = assert_fs::NamedTempFile::new("sample.yaml")?;
+    file.write_str(CONTENT)?;
 
-    cmd.arg("test/file/doesnt/exist.yaml");
+    let mut cmd = Command::cargo_bin("yaml-ed")?;
+    cmd.arg(file.path());
     cmd.assert()
-        .failure()
-        .stderr(predicate::str::contains("could not read file"));
+        .success()
+        .stdout(predicate::str::contains(CONTENT));
 
     Ok(())
 }
