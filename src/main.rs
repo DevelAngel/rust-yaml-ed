@@ -1,5 +1,6 @@
 use std::path::PathBuf;
 
+use anyhow::{Context, Result};
 use clap::Parser;
 
 #[derive(Parser, Debug)]
@@ -10,7 +11,10 @@ struct Args {
     yaml_file: PathBuf,
 }
 
-fn main() {
+fn main() -> Result<()> {
     let args = Args::parse();
-    println!("Hello {}!", args.yaml_file.display());
+    let yaml_content: String = std::fs::read_to_string(&args.yaml_file)
+        .with_context(|| format!("could not read file: {}", args.yaml_file.display()))?;
+    println!("{}", yaml_content);
+    Ok(())
 }
