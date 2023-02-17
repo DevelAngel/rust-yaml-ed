@@ -2,7 +2,7 @@ use std::path::PathBuf;
 
 use anyhow::{Context, Result};
 use clap::Parser;
-use yaml_rust::{YamlEmitter, YamlLoader};
+use yaml_peg::{dump, parse, repr::RcRepr};
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -17,15 +17,11 @@ fn main() -> Result<()> {
     // read
     let orig: String = std::fs::read_to_string(&args.yaml_file)
         .with_context(|| format!("could not read file: {}", args.yaml_file.display()))?;
-    let root = YamlLoader::load_from_str(&orig)
+    let root = parse::<RcRepr>(&orig)
         .with_context(|| format!("could not load yaml from: {}", args.yaml_file.display()))?;
     // write
     {
-        let mut content = String::new();
-        let mut emitter = YamlEmitter::new(&mut content);
-        emitter
-            .dump(&root[0])
-            .with_context(|| "could not write yaml into string")?;
+        let content = dump(&root, &[]);
         println!("{}", &content);
     }
     Ok(())
