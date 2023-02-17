@@ -17,9 +17,8 @@ publish      = false # alpha
 [dependencies]
 anyhow = "1.0.69"
 clap = { version = "4.1.4", features = ["derive"] }
-serde = "1.0"
-serde_yaml = "0.9"
 thiserror = "1.0"
+yaml-rust = "0.4.5"
 
 [dev-dependencies]
 assert_cmd = { version = "2.0.8", features = ["color", "color-auto"] }
