@@ -1,11 +1,9 @@
-mod yaml;
-
 use std::path::PathBuf;
 
 use anyhow::{Context, Result};
 use clap::Parser;
 
-use crate::yaml::loader::YamlLoader;
+use yaml_ed::yaml::YamlLoader;
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
