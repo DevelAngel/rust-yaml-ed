@@ -31,6 +31,7 @@ anyhow = "1.0.69"
 thiserror = "1.0"
 yaml-rust = "0.4.5"
 clap = { version = "4.1.4", features = ["derive"], optional = true }
+an-rope = "0.3.1"
 
 [dev-dependencies]
 assert_cmd = { version = "2.0.8", features = ["color", "color-auto"] }
