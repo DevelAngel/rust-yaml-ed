@@ -1,6 +1,7 @@
 use std::convert;
 use std::fmt;
 use std::fs;
+use std::io::{self, BufRead};
 use std::path;
 
 use an_rope::Rope;
@@ -35,10 +36,20 @@ impl convert::From<String> for YamlEd {
 
 impl convert::TryFrom<&path::Path> for YamlEd {
     type Error = Error;
-    fn try_from(path: &path::Path) -> Result<Self> {
-        let content = fs::read_to_string(path)
-            .with_context(|| format!("could not read file: {}", path.display()))?;
-        Ok(content.into())
+    fn try_from(filename: &path::Path) -> Result<Self> {
+        let file = fs::File::open(filename)
+            .with_context(|| format!("could not open file: {}", filename.display()))?;
+        let mut file = io::BufReader::new(file);
+        let mut content = Rope::new();
+        let mut buf = String::new();
+        while let Ok(len) = file.read_line(&mut buf) {
+            if len > 0 {
+                content = content.append(&Rope::from(&buf));
+            } else {
+                break; // EOF
+            }
+        }
+        Ok(Self { content })
     }
 }
 

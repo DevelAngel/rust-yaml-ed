@@ -16,7 +16,7 @@ struct Args {
 fn main() -> Result<()> {
     let args = Args::parse();
     let ed = YamlEd::try_from(&args.yaml_file)
-        .with_context(|| format!("could not load yaml from: {}", args.yaml_file.display()))?;
+        .with_context(|| format!("could not read file: {}", args.yaml_file.display()))?;
     println!("{}", ed);
     Ok(())
 }
